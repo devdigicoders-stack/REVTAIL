@@ -440,10 +440,6 @@ export default async function TesterDashboardPage({
             padding-right: 0 !important;
             margin: 0 0 1rem 0 !important;
           }
-          .tester-profile-cta-btn {
-            width: 100% !important;
-            margin-top: 0.25rem;
-          }
           .tester-wallet-card .card-body {
             padding: 1rem;
           }
@@ -460,11 +456,6 @@ export default async function TesterDashboardPage({
             width: 100%;
             padding-top: 0.55rem;
             padding-bottom: 0.55rem;
-          }
-        }
-        @media (min-width: 768px) {
-          .tester-profile-cta-btn {
-            width: auto !important;
           }
         }
       `}</style>
@@ -549,7 +540,7 @@ export default async function TesterDashboardPage({
       </div>
 
       {/* ======================================================
-          PROFILE COMPLETION ALERT
+          PROFILE COMPLETION ALERT (Sleek Compact Banner)
       ====================================================== */}
 
       {!isProfileComplete && (
@@ -558,107 +549,94 @@ export default async function TesterDashboardPage({
             id="tester-profile-completion-alert"
             className="card border-0 shadow-sm"
             style={{
-              borderRadius: "16px",
+              borderRadius: "14px",
               background: "#ffffff",
               border: "1px solid #e2e8f0",
-              boxShadow: "0 2px 12px rgba(15, 23, 42, 0.05)",
+              boxShadow: "0 2px 10px rgba(15, 23, 42, 0.04)",
             }}
           >
-            <div className="card-body p-3 p-sm-4">
-              <div className="row align-items-center g-3">
-                {/* Left */}
-                <div className="col-12 col-md-8 col-lg-9">
-                  <div className="d-flex align-items-start gap-3">
-                    <div
-                      className="flex-shrink-0 d-flex align-items-center justify-content-center text-white"
-                      style={{
-                        width: "44px",
-                        height: "44px",
-                        borderRadius: "12px",
-                        background: "linear-gradient(135deg, #012977 0%, #1e40af 100%)",
-                        boxShadow: "0 4px 10px rgba(1, 41, 119, 0.2)",
-                      }}
-                    >
-                      <i className="bi bi-person-check fs-4"></i>
+            <div className="card-body p-3">
+              <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2.5">
+                {/* Left: Icon + Title & Short Subtitle */}
+                <div className="d-flex align-items-center gap-2.5 min-w-0 flex-grow-1">
+                  <div
+                    className="flex-shrink-0 d-flex align-items-center justify-content-center text-white"
+                    style={{
+                      width: "38px",
+                      height: "38px",
+                      borderRadius: "10px",
+                      background: "linear-gradient(135deg, #012977 0%, #1e40af 100%)",
+                      boxShadow: "0 2px 8px rgba(1, 41, 119, 0.2)",
+                    }}
+                  >
+                    <i className="bi bi-person-check fs-5"></i>
+                  </div>
+
+                  <div className="min-w-0 flex-grow-1">
+                    <div className="d-flex flex-wrap align-items-center gap-2">
+                      <h6 className="fw-bold mb-0 text-dark" style={{ fontSize: "14px" }}>
+                        Complete Your Profile
+                      </h6>
+                      <span
+                        className="badge rounded-pill fw-semibold"
+                        style={{
+                          backgroundColor: "#FEF3C7",
+                          color: "#92400E",
+                          fontSize: "10.5px",
+                          padding: "2px 7px",
+                        }}
+                      >
+                        {profileCompletionPercentage}% Done
+                      </span>
                     </div>
-
-                    <div className="flex-grow-1 min-w-0">
-                      <div className="d-flex flex-wrap align-items-center gap-2 mb-1">
-                        <h5 className="fw-bold mb-0 text-dark" style={{ fontSize: "16px" }}>
-                          Complete your tester profile
-                        </h5>
-                        <span
-                          className="badge rounded-pill fw-semibold px-2 py-0.5"
-                          style={{
-                            backgroundColor: "#FEF3C7",
-                            color: "#92400E",
-                            fontSize: "11px",
-                          }}
-                        >
-                          Action Required
-                        </span>
-                      </div>
-
-                      <p className="text-muted mb-2 small" style={{ lineHeight: "1.5" }}>
-                        Add your email, profile image, Instagram ID, interests and bank
-                        details to complete your Revtail profile.
-                      </p>
-
-                      {/* Progress */}
-                      <div className="mt-2" style={{ maxWidth: "360px" }}>
-                        <div className="d-flex align-items-center justify-content-between mb-1">
-                          <span className="text-muted" style={{ fontSize: "11.5px" }}>
-                            Profile Completion
-                          </span>
-                          <span className="fw-bold text-dark" style={{ fontSize: "12px" }}>
-                            {profileCompletionPercentage}%
-                          </span>
-                        </div>
-                        <div
-                          className="progress w-100"
-                          style={{
-                            height: "8px",
-                            backgroundColor: "#e2e8f0",
-                            borderRadius: "999px",
-                            overflow: "hidden",
-                          }}
-                        >
-                          <div
-                            className="progress-bar"
-                            role="progressbar"
-                            style={{
-                              width: `${profileCompletionPercentage}%`,
-                              background: "linear-gradient(90deg, #012977 0%, #2563eb 100%)",
-                              borderRadius: "999px",
-                              transition: "width 0.4s ease",
-                            }}
-                            aria-valuenow={profileCompletionPercentage}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    <p className="text-muted mb-0 small" style={{ fontSize: "12px", lineHeight: "1.3" }}>
+                      Add email, bank &amp; interests to unlock all campaigns
+                    </p>
                   </div>
                 </div>
 
-                {/* Right */}
-                <div className="col-12 col-md-4 col-lg-3 text-md-end">
+                {/* Right: Compact Action Button */}
+                <div className="w-100 w-sm-auto flex-shrink-0 d-flex justify-content-end pt-1 pt-sm-0">
                   <Link
                     href="/tester/profile"
-                    className="btn d-inline-flex align-items-center justify-content-center gap-2 fw-semibold px-4 py-2 text-nowrap tester-profile-cta-btn"
+                    className="btn d-inline-flex align-items-center justify-content-center gap-1.5 fw-semibold px-3 py-1.5 text-nowrap w-100 w-sm-auto"
                     style={{
                       backgroundColor: "#012977",
                       color: "#ffffff",
-                      borderRadius: "10px",
-                      fontSize: "14px",
-                      boxShadow: "0 4px 12px rgba(1, 41, 119, 0.2)",
+                      borderRadius: "8px",
+                      fontSize: "12.5px",
+                      boxShadow: "0 2px 6px rgba(1, 41, 119, 0.18)",
                     }}
                   >
                     <span>Complete Profile</span>
-                    <i className="bi bi-arrow-right fs-6"></i>
+                    <i className="bi bi-arrow-right" style={{ fontSize: "11px" }}></i>
                   </Link>
                 </div>
+              </div>
+
+              {/* Thin Sleek Progress Bar */}
+              <div
+                className="progress w-100 mt-2.5"
+                style={{
+                  height: "5px",
+                  backgroundColor: "#f1f5f9",
+                  borderRadius: "999px",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  className="progress-bar"
+                  role="progressbar"
+                  style={{
+                    width: `${profileCompletionPercentage}%`,
+                    background: "linear-gradient(90deg, #012977 0%, #2563eb 100%)",
+                    borderRadius: "999px",
+                    transition: "width 0.4s ease",
+                  }}
+                  aria-valuenow={profileCompletionPercentage}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                />
               </div>
             </div>
           </div>
