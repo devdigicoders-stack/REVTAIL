@@ -411,13 +411,21 @@ export default async function TesterDashboardPage({
     <>
       {/* Phone-only enhancements; tablets and desktop keep their original layout. */}
       <style>{`
+        nextjs-portal,
+        [data-nextjs-toast],
+        #next-route-announcer {
+          display: none !important;
+        }
         @media (max-width: 767.98px) {
           .navbar-custom {
             display: none !important;
           }
           .main-wrapper {
-            padding: 0 1rem 80px 1rem !important;
+            padding: 0 1rem 85px 1rem !important;
             background-color: #f8fafc !important;
+          }
+          .main-wrapper > .row {
+            margin-top: 0 !important;
           }
           .tester-profile-cta-btn {
             width: 100% !important;
@@ -458,7 +466,7 @@ export default async function TesterDashboardPage({
             <button
               type="button"
               id="sidebar-toggle"
-              className="tester-app-avatar-btn sidebar-toggle-btn border-0 p-0 bg-transparent"
+              className="tester-app-avatar-btn border-0 p-0 bg-transparent"
               aria-label="Open Menu"
             >
               {testerProfile.profileImage ? (
@@ -571,11 +579,19 @@ export default async function TesterDashboardPage({
                       </p>
 
                       {/* Progress */}
-                      <div className="d-flex align-items-center gap-2" style={{ maxWidth: "340px" }}>
+                      <div className="mt-2" style={{ maxWidth: "360px" }}>
+                        <div className="d-flex align-items-center justify-content-between mb-1">
+                          <span className="text-muted" style={{ fontSize: "11.5px" }}>
+                            Profile Completion
+                          </span>
+                          <span className="fw-bold text-dark" style={{ fontSize: "12px" }}>
+                            {profileCompletionPercentage}%
+                          </span>
+                        </div>
                         <div
-                          className="progress flex-grow-1"
+                          className="progress w-100"
                           style={{
-                            height: "7px",
+                            height: "8px",
                             backgroundColor: "#e2e8f0",
                             borderRadius: "999px",
                             overflow: "hidden",
@@ -595,9 +611,6 @@ export default async function TesterDashboardPage({
                             aria-valuemax={100}
                           />
                         </div>
-                        <span className="fw-semibold text-dark fs-12 text-nowrap">
-                          {profileCompletionPercentage}% completed
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -840,7 +853,7 @@ export default async function TesterDashboardPage({
           WALLET
       ====================================================== */}
 
-      <div className="col-12 col-lg-4">
+      <div className="col-12 col-lg-4 d-none d-md-block">
 
         <div className="card border-0 shadow-sm h-100 tester-wallet-card">
 

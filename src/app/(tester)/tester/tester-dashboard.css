@@ -3773,20 +3773,34 @@ span.flatpickr-weekday {
 
 @media (max-width: 767.98px) {
   .tester-app-header-container {
-    margin-top: 0;
-    margin-left: -1rem;
-    margin-right: -1rem;
-    margin-bottom: 1.25rem;
-    width: calc(100% + 2rem);
+    margin-top: 0 !important;
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    margin-bottom: 1.25rem !important;
+    width: calc(100% + 2rem) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .tester-app-header {
     background: #012977;
     background: linear-gradient(180deg, #011d54 0%, #012977 100%);
-    padding: 1.25rem 1.25rem 1.75rem 1.25rem;
+    padding: 2.25rem 1.25rem 1.75rem 1.25rem !important;
     border-bottom-left-radius: 28px;
     border-bottom-right-radius: 28px;
     box-shadow: 0 10px 30px rgba(1, 41, 119, 0.18);
+  }
+
+  .tester-app-avatar-btn {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer;
+    outline: none !important;
   }
 
   .tester-app-avatar-initial {
@@ -3804,8 +3818,8 @@ span.flatpickr-weekday {
   }
 
   .tester-app-header-search-btn {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.12);
     display: flex;
@@ -4919,4 +4933,10 @@ small {
 .dropdown-menu-profile .dropdown-divider {
   border-color: #f1f5f9 !important;
   margin: 4px 0 !important;
+}
+
+nextjs-portal,
+[data-nextjs-toast],
+#next-route-announcer {
+  display: none !important;
 }
