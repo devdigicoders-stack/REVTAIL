@@ -1,0 +1,29 @@
+@use "../mixins/mixins" as *;
+@use "../variables" as *;
+/* Text image mask */ 
+.image-mask {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+/* Text reveal animation */
+.text-reveal-animation {
+    .heading-line-wrap {
+        --highlight-offset: 0%;
+        --reveal-color: #fff;
+        --highlight-color: #cfcfcf;
+
+        background-image: linear-gradient(
+            90deg,
+            var(--reveal-color) 0%,
+            var(--reveal-color) var(--highlight-offset),
+            var(--highlight-color) var(--highlight-offset),
+            var(--highlight-color) 100%
+        );
+
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: block;
+    }
+}

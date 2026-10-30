@@ -1,0 +1,279 @@
+/* ===================================
+    Crafto - Blocks portfolio
+====================================== */
+/* font */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+/* variable */
+:root {     
+  --base-color: #384337;
+  --primary-font: 'Bricolage Grotesque', sans-serif;
+  --dark-gray: #111111;
+  --medium-gray: #818084;
+  --light-green: #e2ede1;
+  --sage-Green:  #899a87;
+} 
+/* reset */
+body {
+  font-size: 16px;
+  line-height: 26px; 
+  color: var(--dark-gray);
+}
+a, a:hover {
+  color: var(--dark-gray);
+}
+/* overflow */
+.overflow-x-clip {
+  overflow-x: clip;
+}
+/* button */
+.btn {
+  letter-spacing: 0;
+  text-transform: none;
+  font-family: var(--primary-font);
+}
+.btn.btn-rounded.btn-extra-large {
+  padding: 18px 36px;
+}
+.btn.with-rounded.btn-extra-large {
+  padding-right: 70px;
+}
+/* heading */
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0;
+}
+/* header */
+header .navbar-brand img {
+  max-height: 48px;
+}
+.header-push-button .push-button {
+  height: 8px;
+}
+.header-push-button .push-button span:first-child {
+  width: 15px;
+  margin-right: 0;
+}
+.show-menu .header-push-button .push-button span:nth-child(1) {
+  width: 15px;
+  top: 0;
+}
+.header-push-button .push-button span {
+  background: var(--dark-gray);
+}
+.show-menu .header-push-button .push-button span:nth-child(2) {
+  top: 6px;
+  -webkit-transform: rotate(0deg); 
+  transform: rotate(0deg);
+}
+.hamburger-logo img {
+  max-height: 48px;
+}
+.hamburger-nav {
+  width: 30%;
+}
+.menu-item-list .nav-link {
+  font-size: 45px;
+  line-height: 40px;
+}
+/* accordion */
+.accordion-style-02 .accordion-item .accordion-header {
+  padding: 25px 0;
+}
+.accordion-style-02 .accordion-item .accordion-body {
+  padding-bottom: 40px;
+}
+.stack-card .stack-card-item {
+  box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
+}
+/* background color */
+.bg-light-green {
+  background-color: var(--light-green);
+}
+.bg-medium-green {
+  background-color: #bbcbb9;
+}
+.bg-transperent-sage-Green {
+  background-color: rgba(137, 154, 135, 0.1);
+}
+.bg-base-color-transparent {
+  background-color: rgba(56, 67, 55, 0.6);
+}
+.bg-bright-green-transparent {
+  background-color: rgba(52, 178, 38, 0.8)
+}
+/* heading */
+.h1, h1 {
+  line-height: 4rem;
+}
+/* line height */
+.lh-150 {
+  line-height: 9.4rem;
+}
+/* line height */
+.p-8px{
+  padding: 8px;
+}
+/* blur box */
+.blur-box-medium {
+  backdrop-filter: blur(45px);
+  -webkit-backdrop-filter: blur(45px);
+}
+/* blur effect */
+.blur-200 {
+  filter: blur(200px);
+}
+.blur-120 {
+  filter: blur(120px);
+}
+/* right */
+.right-minus-250px {
+  right: -250px;
+}
+/* bottom */
+.bottom-minus-270px {
+  bottom: -270px;
+}
+.h-1125px {
+    height: 1125px;
+}
+/* swiper pagination style 02 */
+.swiper-pagination-style-2 .swiper-pagination-bullet {
+  width: 9px;
+  height: 9px;
+  margin: 0 8px !important;
+}
+@media (min-width: 768px) {
+    .swiper-pagination-style-2.text-md-start .swiper-pagination-bullet:first-child {
+      margin-left: 0 !important;
+    }
+    .swiper-pagination-style-2.text-md-start .swiper-pagination-bullet:last-child {
+       margin-right: 0 !important;
+    }
+}
+/* social icon style 11 */
+.social-icon-style-11 ul li a {
+  padding: 2.315rem 1rem;
+}
+/* stack card */
+.stack-card .stack-card-item {
+  transform-origin: center center;
+  -webkit-transform-origin: center center;
+}
+/* input */
+.placeholder-dark::-webkit-input-placeholder {
+  color: var(--dark-gray) !important;
+  text-overflow: ellipsis;
+  opacity: 1;
+}
+.placeholder-dark::-moz-placeholder {
+  color: var(--dark-gray) !important;
+  text-overflow: ellipsis;
+  opacity: 1;
+}
+.placeholder-dark:-ms-input-placeholder {
+  color: var(--dark-gray) !important;
+  text-overflow: ellipsis;
+  opacity: 1;
+}
+/* footer */
+footer .footer-logo img {
+  max-height: 48px;
+}
+footer ul li{
+  margin-bottom: 0;
+}
+/* responsive css */
+@media (max-width: 1700px) {
+    .fs-180 {
+      font-size: 9.75rem;
+    }
+    .fs-275 {
+      font-size: 15rem;
+      line-height: 15rem;
+    }
+}
+@media (max-width: 1600px) {
+    .fs-275 {
+      font-size: 13.5rem;
+      line-height: 13.5rem;
+    }
+}
+@media (max-width: 1399px) {
+  .h1, h1 {
+    font-size: 4rem;
+  }
+  .fs-275 {
+    font-size: 12rem;
+    line-height: 12rem;
+  }
+}
+@media (max-width: 1199px) {
+  .h1, h1 {
+    font-size: 3.123rem;
+    line-height: 3.5rem;
+  }
+  .fs-275 {
+    font-size: 10rem;
+    line-height: 10rem;
+  }
+  .h-1125px {
+    height: 1005px;
+  }
+  .fs-180 {
+      font-size: 8.75rem;
+  }
+  .stack-card .stack-item {
+    position: static !important;
+    padding-top: 0 !important;
+    top: 0 !important;
+  }
+  .stack-card .stack-card-item {
+    transform: scale(1) !important;
+  }
+  .accordion-style-02 .accordion-item .accordion-header {
+    padding: 20px 0;
+  }
+  .sliding-box .sliding-box-img {
+    border-radius: 10px !important;
+  }
+}
+@media (max-width: 991px) {
+  .fs-180 {
+    font-size: 8.714rem;
+  }
+  .lh-150 {
+    line-height: 8.857rem;
+  }
+  .fs-275 {
+    font-size: 8.5rem;
+    line-height: 8.5rem;
+  }
+  .social-icon-style-11 ul li a {
+    padding: 1.429rem 1rem;
+  }
+  header .navbar-expand-lg {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@media (max-width: 767px) {
+  .fs-180 {
+    font-size: 7.167rem;
+    line-height: 7.167rem;
+  }
+  .fs-275 {
+    font-size: 7.5rem;
+    line-height: 7.5rem;
+  }
+  .accordion-style-02 .accordion-item .accordion-header {
+    padding: 15px 0;
+  }
+  header .navbar-brand img {
+    max-height: 40px;
+  }
+}
+@media (max-width: 575px) {
+  .fs-275 {
+      font-size: 4.75rem;
+      line-height: 4.75rem;
+  }
+}

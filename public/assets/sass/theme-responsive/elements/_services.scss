@@ -1,0 +1,26 @@
+@use "../../mixins/mixins" as *;
+@use "../../variables" as *;
+@include respond-to('laptop') {
+    .services-box-style-09 {
+        &:hover {
+            .reveal-title {
+                padding-left: 20px;
+            }
+            .reveal-action {
+                padding-right: 20px;
+            }
+        }
+    }
+}
+@include respond-to('tablet') {
+    .services-box-style-09 {
+        &:hover {
+            .reveal-title {
+                padding-left: 0;
+            }
+            .reveal-action {
+                padding-right: 0;
+            }
+        }
+    }
+}

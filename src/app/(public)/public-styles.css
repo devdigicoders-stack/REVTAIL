@@ -1,0 +1,6 @@
+/* src/app/(public)/public-styles.css */
+@import "/assets/css/vendors.min.css";
+@import "/assets/css/icon.min.css";
+@import "/assets/css/style.css";
+@import "/assets/css/responsive.css";
+@import "/assets/demos/data-analysis/data-analysis.css";

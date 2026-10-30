@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `tester_campaigns` ADD COLUMN `stoppedAt` DATETIME(3) NULL,
+    ADD COLUMN `stoppedBy` INTEGER NULL,
+    ADD COLUMN `stoppedReason` TEXT NULL,
+    MODIFY `status` ENUM('ONGOING', 'COMPLETED', 'CANCELLED', 'ADMIN_STOPPED') NOT NULL DEFAULT 'ONGOING';

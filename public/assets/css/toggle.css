@@ -1,0 +1,197 @@
+/* FIX OVERLAP & CLICKABILITY */
+  header.header-with-topbar {
+    position: relative !important;
+    z-index: 999 !important;
+  }
+
+  .revtail-main-wrapper {
+    position: relative;
+    z-index: 10;
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+
+  /* TOGGLE BUTTON STYLING */
+  .revtail-toggle-box {
+    display: inline-flex;
+    background-color: #f1f3f5;
+    padding: 6px;
+    border-radius: 50px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+  }
+
+  .revtail-toggle-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4a5568;
+    border-radius: 50px;
+    cursor: pointer !important;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  .revtail-toggle-btn.active-btn {
+    background-color: #012977 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+  }
+
+  /* TOGGLE CONTENT PANELS */
+  .revtail-panel {
+    display: none;
+    animation: fadeInMode 0.3s ease-in-out forwards;
+  }
+
+  .revtail-panel.active-panel {
+    display: block;
+  }
+
+  @keyframes fadeInMode {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Mobile Responsive Fixes */
+  @media (max-width: 767px) {
+    .revtail-toggle-btn {
+      padding: 8px 18px;
+      font-size: 14px;
+    }
+  }
+
+
+  /* custom */
+    .banner-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .banner-content {
+    /* Gradient background transitioning from green to yellow/orange */
+    background: linear-gradient(135deg, #70c639 0%, #dfb428 100%);
+    border-radius: 24px;
+    padding: 60px 20px;
+    text-align: center;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+  }
+
+  .banner-subtitle {
+    font-size: clamp(14px, 1.5vw, 16px);
+    margin: 0 0 30px 0;
+    max-width: 600px;
+    opacity: 0.95;
+    line-height: 1.5;
+  }
+
+  .banner-btn {
+    background-color: #ffffff;
+    color: #1f1f1f;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .banner-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .banner-content {
+      padding: 40px 15px;
+      border-radius: 16px;
+    }
+  }
+
+
+    .banner-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .banner-content {
+    /* Gradient background transitioning from green to yellow/orange */
+    background: linear-gradient(135deg, #70c639 0%, #dfb428 100%);
+    border-radius: 24px;
+    padding: 60px 20px;
+    text-align: center;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+  }
+
+  .banner-subtitle {
+    font-size: clamp(14px, 1.5vw, 16px);
+    margin: 0 0 30px 0;
+    max-width: 600px;
+    opacity: 0.95;
+    line-height: 1.5;
+  }
+
+  .banner-btn {
+    background-color: #ffffff;
+    color: #1f1f1f;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .banner-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .banner-content {
+      padding: 40px 15px;
+      border-radius: 16px;
+    }
+  }
+
+  .revtail-mobile-toggle
+  {
+    margin-top:20px!important;
+  }

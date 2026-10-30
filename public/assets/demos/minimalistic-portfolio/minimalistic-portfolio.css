@@ -1,0 +1,333 @@
+/* ===================================
+    Crafto - Minimalistic portfolio
+====================================== */
+/* font */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+/* variable */
+:root {      
+    --primary-font: "Bricolage Grotesque", sans-serif;
+    --alt-font: "Bricolage Grotesque", sans-serif;
+    --base-color:#FF6036;
+    --dark-gray: #121212;
+    --dark-gray02: #2e2e2e;
+    --medium-gray:#626262;
+    --white:#d9d9d9;
+}
+/* reset */
+body { 
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    font-weight: 300;
+    color: var(--white);
+}
+a {
+    color: var(--white);
+}
+/* heading */
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0;
+}
+h1, .h1 {
+    font-size: 4.75rem;
+    line-height: 5rem;
+}
+.h2, h2 {
+    font-size: 3.875rem;
+    line-height: 4rem;
+}
+.h3, h3 {
+    font-size: 3.25rem;
+    line-height: 3.5rem;
+}
+.h4, h4 {
+    font-size: 2.75rem;
+    line-height: 2.75rem;
+}
+.h5, h5 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+.h6, h6 {
+    font-size: 1.75rem;
+    line-height: 2rem;
+}
+/* font size */
+.fs-325 {
+    font-size: 20.313rem;
+    line-height: 20.313rem;
+}
+.fs-500 {
+    font-size: 31.25rem;
+    line-height: 22.25rem;
+}
+/* section */
+section.big-section {
+    padding-top: 150px;
+    padding-bottom: 150px;
+}
+/* header */
+header .navbar-brand img {
+    max-height: 21px;
+}
+.menu-list-wrapper {
+    height: calc(55vh - 150px);
+}
+.hamburger-menu-simple .menu-item-list .nav-link:hover,
+.menu-item-list .active .nav-link {
+    opacity: 1;
+    color: var(--base-color);
+}
+.hamburger-menu-simple .menu-item-list .nav-link {
+    font-size: 44px;
+    padding-right: 0;
+}
+.header-push-button .push-button {
+    height: 8px;
+}
+.header-push-button .push-button span:first-child {
+    width: 15px;
+    margin-right: 0;
+}
+.show-menu .header-push-button .push-button span:nth-child(1) {
+    width: 15px;
+    top: 0;
+}
+.show-menu .header-push-button .push-button span:nth-child(2) {
+    top: 6px;
+    -webkit-transform: rotate(0deg); 
+    transform: rotate(0deg);
+}
+header .container-fluid {
+    padding-left: 65px;
+    padding-right: 65px;
+}
+/* btn */
+.btn {
+    font-family: var(--primary-font);
+}
+[class*=" btn-transparent"], [class*=btn-transparent] {
+    font-weight: 500;
+}
+.btn.btn-large {
+    font-size: 15px;
+}
+.btn.btn-medium {
+    font-size: 14px;
+}
+.btn.btn-small {
+    font-size: 13px;
+}
+.btn.btn-very-small {
+    font-size: 12px;
+}
+/* background */
+.bg-black-transparent-light {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.bg-black {
+    background-color: #101010;
+}
+.bg-golden {
+    background-color: #e9b706;
+}
+.bg-jade {
+    background-color: #00B775;
+}
+.bg-orange {
+    background-color: #f8572b;
+}
+.bg-nero-grey {
+    background-color: #1F1F1F;
+}
+.bg-heliotrope {
+    background-color: #EA83EC;
+}
+/* height */
+.w-6px {
+    width: 8px;
+}
+.h-6px {
+    height: 8px;
+}
+.border-color-dark-gray-02 {
+  border-color: var(--dark-gray02) !important;
+}
+/* opacity */
+.opacity-05 {
+    opacity: 0.05;
+}
+/* blur box */
+.blur-box {
+    backdrop-filter: blur(21px);
+    -webkit-backdrop-filter: blur(21px);
+}
+/* portfolio transform */
+.portfolio-transform .portfolio-box .caption {
+    padding: 16px 34px 16px;
+    border-radius: 65px;
+    color: var(--white);
+}
+/* testimonial style 13  */
+.testimonials-style-13 .swiper-slide,
+.testimonials-style-13 .swiper-slide.swiper-slide-active,
+.testimonials-style-13 .swiper-slide.swiper-slide-next {
+    opacity: 1;
+}
+/* social icon style 10 */
+.social-icon-style-10 li {
+    position: relative;
+}
+.social-icon-style-10 li:before {
+    content: "\2726";
+    color: var(--white);
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: -35px;
+    transform: translateY(-50%);
+    font-size: 18px;
+}
+.social-icon-style-10 li:last-child:before {
+    display: none;
+}
+.border-drawing .bottom-line {
+    display: inline-block;
+    position: absolute;
+    transition: all 0.3s linear;
+    z-index: 2;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    transform: scale(0,1);
+    transform-origin: center;
+}
+.border-drawing:hover .bottom-line {
+    transform: scale(1,1);
+}
+/* portfolio pagination */
+.portfolio-pagination .btn-slide-icon-left, .portfolio-pagination .btn-slide-icon-right {
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+.portfolio-pagination:hover .btn-slide-icon-left {
+    padding-left: 50px;
+}
+.portfolio-pagination:hover .btn-slide-icon-right {
+    padding-right: 50px;
+}
+/* blog */
+.blog-metro figure .blog-image .blog-overlay {
+    background: #1f232c;
+    background: linear-gradient(0deg, rgba(4, 3, 2, .8) 0, rgba(1, 1, 1, 0) 70%);
+}
+.blog-comment li .btn-reply {
+    color: var(--dark-gray);
+    font-weight: 500;
+}
+
+/* footer */
+footer .footer-logo img {
+    max-height: 44px;
+}
+.footer-dark, .footer-dark a, .footer-dark p {
+    color: var(--white);
+    font-weight: 300;
+}
+.footer-dark a:hover, 
+.footer-light a:hover, 
+.footer-navbar li a:hover {
+    color: var(--base-color);
+}
+footer ul li {
+    margin-bottom: 2px;
+}
+footer sub, footer sup {
+    font-size: .60em;
+}
+@media (max-width: 1600px) {
+    header .container-fluid {
+        padding-left: 45px;
+        padding-right: 45px;
+    }
+    /* font size */
+    .fs-325 {
+        font-size: 15.625rem;
+        line-height: 15.625rem;
+    }
+}
+@media (max-width: 1399px) {
+    /* font size */
+    .fs-325 {
+        font-size: 11.625rem;
+        line-height: 11.625rem;
+    }
+}
+@media (max-width: 1199px) {
+    .navbar>.container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .menu-list-wrapper {
+        height: calc(65vh - 100px);
+    }
+    .fs-325 {
+        font-size: 9.625rem;
+        line-height: 9.625rem;
+    }
+    .fs-500 {
+        font-size: 18.625rem;
+        line-height: 13.25rem;
+    }
+}
+@media (max-width: 991px) {
+    .menu-list-wrapper {
+        height: calc(85vh - 150px);
+    }
+    .navbar>.container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .portfolio-pagination:hover .btn-slide-icon-left {
+        padding-left: 20px;
+    }
+    .portfolio-pagination:hover .btn-slide-icon-right {
+        padding-right: 20px;
+    }
+    .md-border-start {
+        border-style: solid !important;
+        border-left-width: 1px !important;
+    }
+}
+@media (max-width: 767px) {
+    .menu-list-wrapper {
+        height: calc(90vh - 120px);
+    }
+    .hamburger-menu-simple .menu-item-list .nav-link {
+        font-size: 38px;
+    }
+    .hamburger-logo img {
+        max-height: 30px;
+    }
+    .portfolio-pagination:hover .btn-slide-icon-left {
+        padding-left: 0;
+    }
+    .portfolio-pagination:hover .btn-slide-icon-right {
+        padding-right: 0;
+    }
+    .fs-500 {
+        font-size: 15.625rem;
+        line-height: 12.25rem;
+    }
+}
+@media (max-width: 575px) {
+    .fs-325 {
+        font-size: 6.625rem;
+        line-height: 6.625rem;
+    }
+    .xs-border-start {
+        border-style: solid !important;
+        border-left-width: 1px !important;
+    }
+}

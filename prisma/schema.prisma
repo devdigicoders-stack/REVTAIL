@@ -1,0 +1,966 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum UserRole {
+  ADMIN
+  BRAND
+  TESTER
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  REJECTED
+  SUSPENDED
+  INACTIVE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model User {
+  id       Int        @id @default(autoincrement())
+  role     UserRole
+  email    String?    @unique @db.VarChar(191)
+  mobile   String?    @unique @db.VarChar(20)
+  password String?    @db.VarChar(255)
+  status   UserStatus @default(PENDING)
+
+  emailVerifiedAt  DateTime?
+  mobileVerifiedAt DateTime?
+  lastLoginAt      DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  adminProfile  AdminProfile?
+  brandProfile  BrandProfile?
+  testerProfile TesterProfile?
+
+  approvedCampaigns             Campaign[]             @relation("CampaignApprovedBy")
+  createdCampaigns              Campaign[]             @relation("CampaignCreatedBy")
+  questionsCreated              Question[]             @relation("QuestionCreatedBy")
+  reviewedCampaignApplications  CampaignApplication[]  @relation("CampaignApplicationReviewer")
+  reviewedTesterCampaignTasks   TesterCampaignTask[]   @relation("TesterCampaignTaskReviewer")
+  reviewedTesterTaskSubmissions TesterTaskSubmission[] @relation("TesterTaskSubmissionReviewer")
+  reviewedPaymentRequests       PaymentRequest[]       @relation("PaymentRequestReviewer")
+  paidPaymentRequests           PaymentRequest[]       @relation("PaymentRequestPayer")
+  passwordResetOtps             PasswordResetOtp[]
+  sentCampaignInvitations CampaignInvitation[] @relation("CampaignInvitationInvitedBy")
+
+  @@index([role])
+  @@index([status])
+  @@map("users")
+}
+
+model BrandProfile {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  companyName String  @db.VarChar(150)
+  companyType String  @db.VarChar(100)
+  categoryId  Int    @map("category_id")
+  website     String? @db.VarChar(255)
+
+  pocFullName String? @db.VarChar(100)
+  pocMobile   String? @db.VarChar(20)
+  designation String? @db.VarChar(100)
+
+  approvalStatus UserStatus @default(PENDING)
+
+  approvedAt      DateTime?
+  rejectionReason String?   @db.Text
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  category  Interest @relation("BrandCategory", fields: [categoryId], references: [id], onDelete: Restrict)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaigns Campaign[]
+
+  @@index([companyName])
+  @@index([approvalStatus])
+  @@map("brand_profiles")
+}
+
+model AdminProfile {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  fullName     String  @db.VarChar(100)
+  designation  String? @db.VarChar(100)
+  profileImage String? @db.VarChar(500)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("admin_profiles")
+}
+
+// Campaign 
+enum TargetGender {
+  MALE
+  FEMALE
+  ANY
+}
+
+enum CampaignStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+  LIVE
+  COMPLETED
+  CANCELLED
+}
+
+
+model Campaign {
+  id Int @id @default(autoincrement())
+
+  // ==========================================
+  // BRAND RELATION
+  // ==========================================
+
+  brandId Int @map("brand_id")
+
+  brand BrandProfile @relation(fields: [brandId], references: [id], onDelete: Restrict)
+
+  // ==========================================
+  // CAMPAIGN IDENTIFICATION
+  // ==========================================
+
+  campaignCode String @unique @map("campaign_code") @db.VarChar(50)
+
+  // ==========================================
+  // PRODUCT INFORMATION
+  // ==========================================
+
+  productName String @map("product_name") @db.VarChar(255)
+
+  productImage String? @map("product_image") @db.VarChar(500)
+
+  productLink String? @map("product_link") @db.VarChar(500)
+
+  // NEW FIELD
+  marketplace String @db.VarChar(100)
+
+  productDescription String? @map("product_description") @db.Text
+
+  // ==========================================
+  // TESTER EARNING
+  // ==========================================
+
+  earningAmount Decimal @map("earning_amount") @db.Decimal(10, 2)
+
+  currency String @default("INR") @db.VarChar(10)
+
+  // ==========================================
+  // TESTER SLOTS
+  // ==========================================
+
+  totalSlots Int @map("total_slots")
+
+  filledSlots Int @default(0) @map("filled_slots")
+
+  availableSlots Int? @map("available_slots")
+
+  // ==========================================
+  // TARGET TESTERS
+  // ==========================================
+
+  targetGender TargetGender @default(ANY) @map("target_gender")
+  targetState  String?      @map("target_state") @db.VarChar(100)
+  targetCity   String?      @map("target_city") @db.VarChar(100)
+  startDate    DateTime?    @map("start_date")
+  endDate      DateTime?    @map("end_date")
+
+  // ==========================================
+  // TASK CONFIGURATION
+  // ==========================================
+
+  task4Required Boolean @default(false) @map("task_4_required")
+
+  // ==========================================
+  // CAMPAIGN STATUS
+  // ==========================================
+
+  status CampaignStatus @default(DRAFT)
+
+ 
+  // ==========================================
+  // SUBMISSION / APPROVAL
+  // ==========================================
+
+  submittedAt DateTime? @map("submitted_at")
+
+  approvedAt DateTime? @map("approved_at")
+
+  rejectedAt DateTime? @map("rejected_at")
+
+  // ==========================================
+  // APPROVED BY ADMIN
+  // ==========================================
+
+  approvedBy Int? @map("approved_by")
+
+  approvedByUser User? @relation("CampaignApprovedBy", fields: [approvedBy], references: [id], onDelete: SetNull)
+
+  rejectionReason String? @map("rejection_reason") @db.Text
+
+  // ==========================================
+  // CREATED BY
+  // ==========================================
+
+  createdBy Int @map("created_by")
+
+  createdByUser User @relation("CampaignCreatedBy", fields: [createdBy], references: [id], onDelete: Restrict)
+
+  // ==========================================
+  // TIMESTAMPS
+  // ==========================================
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  campaignQuestions  CampaignQuestion[]
+  images             CampaignImage[]
+  testerApplications CampaignApplication[]
+  testerCampaigns    TesterCampaign[]
+  invitations CampaignInvitation[]
+
+  // ==========================================
+  // INDEXES
+  // ==========================================
+
+  @@index([brandId])
+  @@index([createdBy])
+  @@index([approvedBy])
+  @@index([status])
+  @@map("campaigns")
+}
+
+// ****** QUESTIONS
+
+enum QuestionType {
+  TEXT
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+}
+
+enum CampaignQuestionSource {
+  FIXED
+  CUSTOM
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+
+  questionText String @map("question_text") @db.Text
+
+  questionType QuestionType @map("question_type")
+
+  isActive Boolean @default(true) @map("is_active")
+
+  source CampaignQuestionSource @default(FIXED)
+
+  createdBy Int @map("created_by")
+
+  createdByUser User @relation("QuestionCreatedBy", fields: [createdBy], references: [id], onDelete: Restrict)
+
+  options QuestionOption[]
+
+  campaignQuestions CampaignQuestion[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([createdBy])
+  @@index([questionType])
+  @@index([source])
+  @@index([isActive])
+  @@map("questions")
+}
+
+model QuestionOption {
+  id Int @id @default(autoincrement())
+
+  questionId Int @map("question_id")
+
+  optionText String @map("option_text") @db.VarChar(500)
+
+  optionOrder Int @default(0) @map("option_order")
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([questionId])
+  @@map("question_options")
+}
+
+model CampaignQuestion {
+  id Int @id @default(autoincrement())
+
+  campaignId Int @map("campaign_id")
+
+  questionId Int? @map("question_id")
+
+  questionText String @map("question_text") @db.Text
+
+  questionType QuestionType @map("question_type")
+
+  source CampaignQuestionSource @default(CUSTOM)
+
+  isRequired Boolean @default(true) @map("is_required")
+
+  questionOrder Int @default(0) @map("question_order")
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  question Question? @relation(fields: [questionId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  updatedAt             DateTime               @updatedAt @map("updated_at")
+  testerQuestionAnswers TesterQuestionAnswer[]
+
+  @@index([campaignId])
+  @@index([questionId])
+  @@index([source])
+  @@map("campaign_questions")
+}
+
+model CampaignImage {
+  id Int @id @default(autoincrement())
+
+  campaignId Int @map("campaign_id")
+
+  imagePath String @map("image_path") @db.VarChar(500)
+
+  imageOrder Int @default(0) @map("image_order")
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([campaignId])
+  @@map("campaign_images")
+}
+
+model PasswordResetOtp {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  otp_hash    String
+  reset_token String?  @unique
+  verified    Boolean  @default(false)
+  expires_at  DateTime
+  attempts    Int      @default(0)
+  used        Boolean  @default(false)
+  created_at  DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+enum TesterStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  BLOCKED
+}
+
+model Interest {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  testers       TesterInterest[]
+  brandProfiles BrandProfile[]   @relation("BrandCategory")
+
+  @@map("interests")
+}
+
+enum AgeCategory {
+  AGE_18_24
+  AGE_25_34
+  AGE_35_44
+  AGE_45_PLUS
+}
+
+model TesterProfile {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  fullName    String
+  gender      Gender
+  ageCategory AgeCategory
+  pinCode     String
+
+  // Derived from PIN code
+  city  String?
+  state String?
+
+  profileImage String?
+  instagramId  String?
+
+  approvalStatus  TesterStatus @default(PENDING)
+  approvedAt      DateTime?
+  rejectionReason String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // Relations
+
+  user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interests            TesterInterest[]
+  bankDetails          TesterBankDetails?
+  wallet               TesterWallet?
+  paymentRequests      PaymentRequest[]
+  campaignApplications CampaignApplication[]
+  testerCampaigns      TesterCampaign[]
+  campaignInvitations CampaignInvitation[]
+
+  @@index([gender])
+  @@index([ageCategory])
+  @@index([approvalStatus])
+  @@index([pinCode])
+  @@map("tester_profiles")
+}
+
+model TesterInterest {
+  id              Int @id @default(autoincrement())
+  testerProfileId Int
+  interestId      Int
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  testerProfile TesterProfile @relation(fields: [testerProfileId], references: [id], onDelete: Cascade)
+
+  interest Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
+
+  // Same tester cannot add same interest twice
+  @@unique([testerProfileId, interestId])
+  @@index([testerProfileId])
+  @@index([interestId])
+  @@map("tester_interests")
+}
+
+model TesterBankDetails {
+  id                 Int           @id @default(autoincrement())
+  testerProfileId    Int           @unique
+  accountHolderName  String
+  bankName           String
+  accountNumber      String
+  accountNumberLast4 String?
+  ifscCode           String
+  upiId              String?
+  isVerified         Boolean       @default(false)
+  isActive           Boolean       @default(true)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  // Relations
+  testerProfile      TesterProfile @relation(fields: [testerProfileId], references: [id], onDelete: Cascade)
+
+  @@map("tester_bank_details")
+}
+
+enum CampaignApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model CampaignApplication {
+  id Int @id @default(autoincrement())
+
+  testerProfileId Int
+  campaignId      Int
+
+  status CampaignApplicationStatus @default(PENDING)
+
+  appliedAt DateTime @default(now())
+
+  reviewedAt      DateTime?
+  reviewedBy      Int?
+  rejectionReason String?
+  testerCampaign  TesterCampaign?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  testerProfile TesterProfile @relation(fields: [testerProfileId], references: [id], onDelete: Cascade)
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  reviewer User? @relation("CampaignApplicationReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+
+  // One tester can apply only once to the same campaign
+  @@unique([testerProfileId, campaignId])
+  @@index([testerProfileId])
+  @@index([campaignId])
+  @@index([status])
+  @@map("campaign_applications")
+}
+
+model PinCodeMaster {
+  id        Int      @id @default(autoincrement())
+  pinCode   String
+  city      String
+  state     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([pinCode])
+  @@index([state])
+  @@map("pin_code_master")
+}
+
+enum TesterCampaignStatus {
+  ONGOING
+  COMPLETED
+  CANCELLED
+  ADMIN_STOPPED
+}
+
+model TesterCampaign {
+  id              Int @id @default(autoincrement())
+  testerProfileId Int
+  campaignId      Int
+  applicationId   Int @unique
+
+  status TesterCampaignStatus @default(ONGOING)
+
+  currentTask Int @default(1)
+
+  // Snapshot of earning when tester is enrolled
+  earningAmount Decimal @db.Decimal(10, 2)
+
+  joinedAt    DateTime  @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  cancelledAt        DateTime?
+  cancellationReason String?
+
+  stoppedAt     DateTime?
+  stoppedBy     Int?
+  stoppedReason String? @db.Text
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+
+  // Relations
+  testerProfile TesterProfile @relation(fields: [testerProfileId], references: [id], onDelete: Cascade)
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  application CampaignApplication  @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+  tasks       TesterCampaignTask[]
+
+  paymentRequest     PaymentRequest?
+  walletTransactions WalletTransaction[]
+
+  // One tester can have only one enrollment
+  // for a particular campaign
+  @@unique([testerProfileId, campaignId])
+  @@index([testerProfileId])
+  @@index([campaignId])
+  @@index([status])
+  @@map("tester_campaigns")
+}
+
+enum TesterCampaignTaskStatus {
+  LOCKED
+  AVAILABLE
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+model TesterCampaignTask {
+  id Int @id @default(autoincrement())
+
+  testerCampaignId Int
+
+  taskNumber Int
+
+  status TesterCampaignTaskStatus @default(LOCKED)
+
+  unlockedAt  DateTime?
+  submittedAt DateTime?
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
+
+  reviewedBy      Int?
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  testerCampaign TesterCampaign @relation(fields: [testerCampaignId], references: [id], onDelete: Cascade)
+
+  reviewer    User?                  @relation("TesterCampaignTaskReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  submissions TesterTaskSubmission[]
+
+  // One Task 1, Task 2, Task 3, Task 4
+  // per TesterCampaign
+  @@unique([testerCampaignId, taskNumber])
+  @@index([testerCampaignId])
+  @@index([status])
+  @@map("tester_campaign_tasks")
+}
+
+enum TesterTaskSubmissionStatus {
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+model TesterTaskSubmission {
+  id Int @id @default(autoincrement())
+
+  testerCampaignTaskId Int
+  attemptNumber        Int @default(1)
+
+  status TesterTaskSubmissionStatus @default(SUBMITTED)
+
+  submittedAt DateTime @default(now())
+
+  reviewedBy      Int?
+  reviewedAt      DateTime?
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  testerCampaignTask  TesterCampaignTask   @relation(fields: [testerCampaignTaskId], references: [id], onDelete: Cascade)
+  reviewer            User?                @relation("TesterTaskSubmissionReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  task1PurchaseDetail Task1PurchaseDetail?
+  task2ReceivedDetail Task2ReceivedDetail?
+  task3ReviewDetail   Task3ReviewDetail?
+  task4PublishDetail  Task4PublishDetail?
+
+  // One attempt number per task
+  @@unique([testerCampaignTaskId, attemptNumber])
+  @@index([testerCampaignTaskId])
+  @@index([status])
+  @@map("tester_task_submissions")
+}
+
+model Task1PurchaseDetail {
+  id Int @id @default(autoincrement())
+
+  taskSubmissionId Int @unique
+
+  orderId        String
+  purchaseAmount Decimal @db.Decimal(10, 2)
+  proofImage     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation
+  taskSubmission TesterTaskSubmission @relation(fields: [taskSubmissionId], references: [id], onDelete: Cascade)
+
+  @@map("task1_purchase_details")
+}
+
+model Task2ReceivedDetail {
+  id Int @id @default(autoincrement())
+
+  taskSubmissionId Int @unique
+
+  proofImage String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation
+  taskSubmission TesterTaskSubmission @relation(fields: [taskSubmissionId], references: [id], onDelete: Cascade)
+
+  @@map("task2_received_details")
+}
+
+model Task3ReviewDetail {
+  id Int @id @default(autoincrement())
+
+  taskSubmissionId Int @unique
+
+  reviewText String @db.Text
+
+  rating Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  taskSubmission TesterTaskSubmission @relation(fields: [taskSubmissionId], references: [id], onDelete: Cascade)
+
+  answers TesterQuestionAnswer[]
+
+  @@map("task3_review_details")
+}
+
+enum CampaignQuestionType {
+  TEXT
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  RATING
+}
+
+model TesterQuestionAnswer {
+  id Int @id @default(autoincrement())
+
+  task3ReviewDetailId Int
+
+  campaignQuestionId Int
+
+  answerText String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  task3ReviewDetail Task3ReviewDetail @relation(fields: [task3ReviewDetailId], references: [id], onDelete: Cascade)
+
+  campaignQuestion CampaignQuestion @relation(fields: [campaignQuestionId], references: [id], onDelete: Restrict)
+
+  @@unique([task3ReviewDetailId, campaignQuestionId])
+  @@index([task3ReviewDetailId])
+  @@index([campaignQuestionId])
+  @@map("tester_question_answers")
+}
+
+model Task4PublishDetail {
+  id Int @id @default(autoincrement())
+
+  taskSubmissionId Int @unique
+
+  publishedUrl String @db.Text
+
+  proofImage String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  taskSubmission TesterTaskSubmission @relation(fields: [taskSubmissionId], references: [id], onDelete: Cascade)
+
+  @@map("task4_publish_details")
+}
+
+enum PaymentRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PAID
+}
+
+enum ManualPaymentMethod {
+  UPI
+  BANK_TRANSFER
+}
+
+enum WalletTransactionType {
+  CAMPAIGN_EARNING
+  PAYMENT_PAID
+}
+
+model TesterWallet {
+  id Int @id @default(autoincrement())
+
+  testerProfileId Int @unique
+
+  totalEarned      Decimal @default(0) @db.Decimal(10, 2)
+  availableBalance Decimal @default(0) @db.Decimal(10, 2)
+  totalPaid        Decimal @default(0) @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  testerProfile TesterProfile @relation(fields: [testerProfileId], references: [id], onDelete: Cascade)
+
+  transactions WalletTransaction[]
+
+  @@map("tester_wallets")
+}
+
+model PaymentRequest {
+  id Int @id @default(autoincrement())
+
+  testerProfileId  Int
+  testerCampaignId Int @unique
+
+  amount Decimal @db.Decimal(10, 2)
+
+  preferredPaymentMethod ManualPaymentMethod
+
+  status PaymentRequestStatus @default(PENDING)
+
+  requestedAt DateTime @default(now())
+
+  // ------------------------------------------------------------
+  // ADMIN REVIEW
+  // ------------------------------------------------------------
+
+  reviewedAt      DateTime?
+  reviewedBy      Int?
+  rejectionReason String?   @db.Text
+
+  approvedAt DateTime?
+
+  // ------------------------------------------------------------
+  // MANUAL PAYMENT
+  // Filled later when Admin actually pays outside Revtail
+  // ------------------------------------------------------------
+
+  paidAt DateTime?
+  paidBy Int?
+
+  paidAmount Decimal? @db.Decimal(10, 2)
+
+  paidMethod ManualPaymentMethod?
+
+  transactionReference String?
+
+  adminNote String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ------------------------------------------------------------
+  // RELATIONS
+  // ------------------------------------------------------------
+
+  testerProfile TesterProfile @relation(fields: [testerProfileId], references: [id], onDelete: Cascade)
+
+  testerCampaign TesterCampaign @relation(fields: [testerCampaignId], references: [id], onDelete: Restrict)
+
+  reviewer User? @relation("PaymentRequestReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+
+  payer User? @relation("PaymentRequestPayer", fields: [paidBy], references: [id], onDelete: SetNull)
+
+  walletTransactions WalletTransaction[]
+
+  @@index([testerProfileId])
+  @@index([status])
+  @@index([requestedAt])
+  @@map("payment_requests")
+}
+
+model WalletTransaction {
+  id Int @id @default(autoincrement())
+
+  walletId Int
+
+  testerCampaignId Int?
+  paymentRequestId Int?
+
+  type WalletTransactionType
+
+  amount Decimal @db.Decimal(10, 2)
+
+  balanceAfter Decimal @db.Decimal(10, 2)
+
+  description String? @db.Text
+
+  createdAt DateTime @default(now())
+
+  // Relations
+
+  wallet TesterWallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  testerCampaign TesterCampaign? @relation(fields: [testerCampaignId], references: [id], onDelete: SetNull)
+
+  paymentRequest PaymentRequest? @relation(fields: [paymentRequestId], references: [id], onDelete: SetNull)
+
+  @@unique([walletId, testerCampaignId, type])
+  @@unique([walletId, paymentRequestId, type])
+  @@index([walletId])
+  @@index([testerCampaignId])
+  @@index([paymentRequestId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("wallet_transactions")
+}
+
+enum CampaignInvitationStatus {
+  SENT
+  CANCELLED
+}
+
+model CampaignInvitation {
+  id Int @id @default(autoincrement())
+
+  campaignId      Int @map("campaign_id")
+  testerProfileId Int @map("tester_profile_id")
+  invitedBy       Int @map("invited_by")
+
+  status CampaignInvitationStatus @default(SENT)
+
+  invitedAt   DateTime  @default(now()) @map("invited_at")
+  readAt      DateTime? @map("read_at")
+  cancelledAt DateTime? @map("cancelled_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  testerProfile TesterProfile @relation(fields: [testerProfileId], references: [id], onDelete: Cascade)
+  invitedByUser User @relation("CampaignInvitationInvitedBy", fields: [invitedBy], references: [id], onDelete: Restrict)
+
+  @@unique([campaignId, testerProfileId])
+  @@index([campaignId])
+  @@index([testerProfileId])
+  @@index([invitedBy])
+  @@index([status])
+  @@map("campaign_invitations")
+}
+
+model ContactInquiry {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(191)
+  email     String   @db.VarChar(191)
+  subject   String   @db.VarChar(191)
+  message   String   @db.Text
+  status    String   @default("NEW") @db.VarChar(50)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("contact_inquiries")
+}
+
+
+

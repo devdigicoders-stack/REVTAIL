@@ -1,0 +1,177 @@
+/* Color Palette Variables */
+:root {
+  --bg-dark-slate: #0b1320;
+  --bg-dark-card: #111a28;
+  --accent-green: #72b01d;
+  --accent-green-glow: rgba(114, 176, 29, 0.15);
+  --muted-slate: #94a3b8;
+  --border-glass: rgba(255, 255, 255, 0.08);
+}
+
+
+
+.bg-dark-slate {
+  background-color: var(--bg-dark-slate);
+}
+
+.bg-dark-card {
+  background-color: var(--bg-dark-card);
+}
+
+.text-accent-green {
+  color: var(--accent-green) !important;
+}
+
+.bg-accent-glow {
+  background-color: var(--accent-green-glow);
+}
+
+.text-muted-slate {
+  color: var(--muted-slate);
+}
+
+/* Ambient Glow Background Effect */
+.ambient-glow {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(114, 176, 29, 0.12) 0%, rgba(11, 19, 32, 0) 70%);
+  filter: blur(80px);
+}
+
+/* Bento Cards with Hover Glassmorphism */
+.bento-card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.3s ease;
+  backdrop-filter: blur(12px);
+}
+
+.bg-glass {
+  background: rgba(17, 26, 40, 0.65);
+}
+
+.border-glass {
+  border: 1px solid var(--border-glass);
+}
+
+.bento-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(114, 176, 29, 0.4) !important;
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5), 
+              0 0 20px 0 rgba(114, 176, 29, 0.15);
+}
+
+/* Badge Tags & Chips */
+.badge-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-green);
+  text-transform: uppercase;
+}
+
+.pill-chip {
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+}
+
+.pill-chip:hover {
+  transform: scale(1.04);
+}
+
+.pill-green {
+  background-color: rgba(114, 176, 29, 0.12);
+  color: var(--accent-green);
+  border: 1px solid rgba(114, 176, 29, 0.3);
+}
+
+.pill-amber {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* UI Widget Details */
+.border-subtle {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Progress & Price Slider Mockups */
+.bg-accent-green {
+  background-color: var(--accent-green) !important;
+}
+
+.price-slider-track {
+  height: 6px;
+  background-color: #1e293b;
+}
+
+.price-slider-pin {
+  width: 14px;
+  height: 14px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-green);
+}
+
+.start-65 {
+  left: 65%;
+}
+
+.fs-7 { font-size: 0.85rem; }
+.fs-8 { font-size: 0.75rem; }
+.tracking-wider { letter-spacing: 0.08em; }
+
+
+/* src/app/(public)/custom-section.css */
+
+/* src/app/(public)/custom-section.css */
+
+/* 1. Keep the desktop logo container fixed so it doesn't push the navbar */
+.navbar-brand {
+  display: flex !important;
+  align-items: center !important;
+  max-width: 115px !important;
+}
+
+/* 2. Desktop-specific logo sizing */
+.navbar-brand img,
+  .navbar-brand img.mobile-logo,
+  img.mobile-logo {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+     height: 46px !important;
+    max-height: 46px !important;
+    width: auto !important;
+    object-fit: contain !important;
+  }
+
+/* 3. Mobile-specific logo sizing (prevents shrinking to 23px) */
+@media (max-width: 991px) {
+  .navbar-brand img,
+  .navbar-brand img.mobile-logo,
+  img.mobile-logo {
+    height: 46px !important;
+    max-height: 46px !important;
+    width: 115px !important;
+    object-fit: contain !important;
+  }
+}
