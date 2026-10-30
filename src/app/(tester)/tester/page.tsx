@@ -421,11 +421,24 @@ export default async function TesterDashboardPage({
             display: none !important;
           }
           .main-wrapper {
-            padding: 0 1rem 85px 1rem !important;
+            margin-left: 0 !important;
+            padding: 0 0 85px 0 !important;
             background-color: #f8fafc !important;
+            width: 100% !important;
+            overflow-x: hidden !important;
           }
           .main-wrapper > .row {
-            margin-top: 0 !important;
+            margin: 0 !important;
+            --bs-gutter-x: 0 !important;
+          }
+          .main-wrapper > .row > * {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+          .main-wrapper > .row > .tester-app-header-container {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin: 0 0 1rem 0 !important;
           }
           .tester-profile-cta-btn {
             width: 100% !important;
@@ -460,7 +473,20 @@ export default async function TesterDashboardPage({
           NATIVE MOBILE APP HEADER (Phones Only - Exact Match)
       ====================================================== */}
       <div className="col-12 d-block d-md-none tester-app-header-container">
-        <div className="tester-app-header">
+        <div
+          className="tester-app-header"
+          style={{
+            background: "linear-gradient(180deg, #011d54 0%, #012977 100%)",
+            paddingTop: "2.75rem",
+            paddingBottom: "1.75rem",
+            paddingLeft: "1.25rem",
+            paddingRight: "1.25rem",
+            borderBottomLeftRadius: "28px",
+            borderBottomRightRadius: "28px",
+            boxShadow: "0 10px 30px rgba(1, 41, 119, 0.18)",
+            width: "100%",
+          }}
+        >
           {/* Top Row: User Avatar & Search */}
           <div className="d-flex align-items-center justify-content-between mb-3">
             <button

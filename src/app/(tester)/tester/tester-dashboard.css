@@ -3772,23 +3772,39 @@ span.flatpickr-weekday {
 ============================================================ */
 
 @media (max-width: 767.98px) {
+  .main-wrapper {
+    margin-left: 0 !important;
+    padding: 0 0 85px 0 !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .main-wrapper > .row {
+    margin: 0 !important;
+    --bs-gutter-x: 0 !important;
+  }
+
+  .main-wrapper > .row > * {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .main-wrapper > .row > .tester-app-header-container,
   .tester-app-header-container {
-    margin-top: 0 !important;
-    margin-left: -1rem !important;
-    margin-right: -1rem !important;
-    margin-bottom: 1.25rem !important;
-    width: calc(100% + 2rem) !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    padding: 0 !important;
+    margin: 0 0 1rem 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .tester-app-header {
     background: #012977;
     background: linear-gradient(180deg, #011d54 0%, #012977 100%);
-    padding: 2.25rem 1.25rem 1.75rem 1.25rem !important;
+    padding: 2.75rem 1.25rem 1.75rem 1.25rem !important;
     border-bottom-left-radius: 28px;
     border-bottom-right-radius: 28px;
     box-shadow: 0 10px 30px rgba(1, 41, 119, 0.18);
+    width: 100% !important;
   }
 
   .tester-app-avatar-btn {
