@@ -8,24 +8,32 @@ export default function TesterBottomNav() {
 
   const menuItems = [
     {
-      label: "Live",
-      href: "/tester/campaigns/live",
-      icon: "bi-megaphone",
+      label: "Home",
+      href: "/tester",
+      icon: "bi-house-door",
+      activeIcon: "bi-house-door-fill",
+      exact: true,
     },
     {
       label: "My Apps",
       href: "/tester/campaigns/applications",
-      icon: "bi-send-check",
+      icon: "bi-megaphone",
+      activeIcon: "bi-megaphone-fill",
+      exact: false,
     },
     {
-      label: "Ongoing",
-      href: "/tester/campaigns/ongoing",
-      icon: "bi-hourglass-split",
+      label: "Earnings",
+      href: "/tester/wallet",
+      icon: "bi-graph-up-arrow",
+      activeIcon: "bi-graph-up-arrow",
+      exact: false,
     },
     {
-      label: "Completed",
-      href: "/tester/campaigns/history",
-      icon: "bi-check-circle",
+      label: "Profile",
+      href: "/tester/profile",
+      icon: "bi-person",
+      activeIcon: "bi-person-fill",
+      exact: false,
     },
   ];
 
@@ -35,9 +43,9 @@ export default function TesterBottomNav() {
       aria-label="Tester mobile navigation"
     >
       {menuItems.map((item) => {
-        const isActive =
-          pathname === item.href ||
-          pathname.startsWith(`${item.href}/`);
+        const isActive = item.exact
+          ? pathname === item.href
+          : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
         return (
           <Link
@@ -47,11 +55,14 @@ export default function TesterBottomNav() {
               isActive ? "active" : ""
             }`}
           >
-            <i
-              className={`bi ${item.icon} tester-mobile-bottom-nav-icon`}
-            ></i>
-
-            <span>{item.label}</span>
+            <div className="tester-mobile-bottom-nav-icon-wrap">
+              <i
+                className={`bi ${
+                  isActive ? item.activeIcon : item.icon
+                } tester-mobile-bottom-nav-icon`}
+              ></i>
+            </div>
+            <span className="tester-mobile-bottom-nav-label">{item.label}</span>
           </Link>
         );
       })}

@@ -641,192 +641,89 @@ export default function LiveCampaignsPage() {
           MOBILE APP VIEW
       ====================================================== */}
 
-      {campaigns.length >
-        0 && (
-
+      {campaigns.length > 0 && (
         <div className="col-12 d-md-none">
-
           <div className="tester-mobile-campaign-list">
+            {campaigns.map((campaign) => {
+              const filledCount =
+                campaign.filledSlots ??
+                (campaign.totalSlots - (campaign.availableSlots ?? 0));
+              const isApplied = Boolean(campaign.application);
 
-            {campaigns.map(
-              (
-                campaign
-              ) => (
-
-                <div
-                  key={
-                    campaign.id
-                  }
+              return (
+                <Link
+                  key={campaign.id}
+                  href={`/tester/campaigns/live/${campaign.id}`}
                   className="tester-mobile-campaign-card"
                 >
-
-                  {/* TOP */}
-
-                  <div className="tester-mobile-campaign-top">
-
-                    <div className="tester-mobile-product-image">
-
-                      {campaign.productImage ? (
-
-                        <img
-                          src={
-                            campaign.productImage
-                          }
-                          alt={
-                            campaign.productName
-                          }
-                        />
-
-                      ) : (
-
-                        <div className="tester-campaign-image-placeholder">
-
-                          <i className="bi bi-image"></i>
-
-                        </div>
-
-                      )}
-
-                    </div>
-
-                    <div className="tester-mobile-product-info">
-
-                      <div className="tester-campaign-brand">
-
-                        {
-                          campaign
-                            .brand
-                            .companyName ??
-                          "Brand"
-                        }
-
-                      </div>
-
-                      <h6>
-                        {
-                          campaign.productName
-                        }
-                      </h6>
-
-                      <div className="tester-mobile-task-count">
-
-                        <i className="bi bi-list-check"></i>
-
-                        {
-                          campaign.task4Required
-                            ? "4 Tasks"
-                            : "3 Tasks"
-                        }
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                  {/* STATS */}
-
-                  <div className="tester-mobile-campaign-stats">
-
-                    <div className="tester-mobile-stat">
-
-                      <span>
-                        Earning
-                      </span>
-
-                      <strong>
-
-                        ₹
-                        {Number(
-                          campaign.earningAmount
-                        ).toLocaleString(
-                          "en-IN"
-                        )}
-
-                      </strong>
-
-                    </div>
-
-                    <div className="tester-mobile-stat">
-
-                      <span>
-                        Slots Left
-                      </span>
-
-                      <strong>
-                        {
-                          campaign.availableSlots
-                        }
-                      </strong>
-
-                    </div>
-
-                  </div>
-
-                  {/* ACTION */}
-
-                  <div className="tester-mobile-campaign-action">
-
-                    {campaign.canApply ? (
-
-                      <Link
-                        href={`/tester/campaigns/live/${campaign.id}`}
-                        className="btn btn-primary w-100"
-                      >
-
-                        View More Details
-
-                        <i className="bi bi-arrow-right ms-2"></i>
-
-                      </Link>
-
+                  {/* Square Product Image */}
+                  <div className="tester-mobile-product-image">
+                    {campaign.productImage ? (
+                      <img
+                        src={campaign.productImage}
+                        alt={campaign.productName}
+                      />
                     ) : (
-
-                      <>
-                        <Link
-                          href={`/tester/campaigns/live/${campaign.id}`}
-                          className="btn btn-outline-primary flex-grow-1"
-                        >
-
-                          View Campaign
-
-                        </Link>
-
-                        {campaign.application && (
-
-                          <span
-                            className={`tester-application-status ${getApplicationClass(
-                              campaign
-                                .application
-                                .status
-                            )}`}
-                          >
-
-                            {
-                              campaign
-                                .application
-                                .status
-                            }
-
-                          </span>
-
-                        )}
-
-                      </>
-
+                      <div className="tester-campaign-image-placeholder">
+                        <i className="bi bi-image text-muted fs-4"></i>
+                      </div>
                     )}
-
                   </div>
 
-                </div>
+                  {/* Product Info & Stats */}
+                  <div className="tester-mobile-product-info">
+                    <div className="d-flex align-items-start justify-content-between gap-1">
+                      <div className="tester-mobile-product-title">
+                        {campaign.productName}
+                      </div>
+                      {isApplied && campaign.application && (
+                        <span
+                          className={`badge rounded-pill flex-shrink-0 bg-opacity-10 ${
+                            campaign.application.status === "APPROVED"
+                              ? "bg-success text-success"
+                              : campaign.application.status === "REJECTED"
+                              ? "bg-danger text-danger"
+                              : "bg-warning text-dark"
+                          }`}
+                          style={{ fontSize: "10px", padding: "3px 8px" }}
+                        >
+                          {campaign.application.status}
+                        </span>
+                      )}
+                    </div>
 
-              )
-            )}
+                    <div className="tester-mobile-brand-name">
+                      {campaign.brand?.companyName ?? "Brand"}
+                    </div>
 
+                    {/* Stats */}
+                    <div className="tester-mobile-stats-row">
+                      <div className="tester-mobile-stat-col">
+                        <div className="tester-mobile-stat-label">
+                          <i className="bi bi-wallet2"></i>
+                          <span>Earn Upto</span>
+                        </div>
+                        <div className="tester-mobile-stat-value-earn">
+                          ₹{Number(campaign.earningAmount).toLocaleString("en-IN")}
+                        </div>
+                      </div>
+
+                      <div className="tester-mobile-stat-col text-end">
+                        <div className="tester-mobile-stat-label justify-content-end">
+                          <i className="bi bi-people"></i>
+                          <span>Slots</span>
+                        </div>
+                        <div className="tester-mobile-stat-value-slots">
+                          {filledCount}/{campaign.totalSlots}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-
         </div>
-
       )}
     </>
   );

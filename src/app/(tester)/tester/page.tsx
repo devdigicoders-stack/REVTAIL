@@ -216,6 +216,8 @@ export default async function TesterDashboardPage({
           productName: true,
           productImage: true,
           earningAmount: true,
+          totalSlots: true,
+          filledSlots: true,
           availableSlots: true,
           task4Required: true,
           brand: {
@@ -403,11 +405,20 @@ export default async function TesterDashboardPage({
   // 11. UI
   // ============================================================
 
+  const testerFirstName = testerProfile.fullName.trim().split(" ")[0] || "Tester";
+
   return (
     <>
       {/* Phone-only enhancements; tablets and desktop keep their original layout. */}
       <style>{`
-        @media (max-width: 575.98px) {
+        @media (max-width: 767.98px) {
+          .navbar-custom {
+            display: none !important;
+          }
+          .main-wrapper {
+            padding: 0 1rem 80px 1rem !important;
+            background-color: #f8fafc !important;
+          }
           .tester-wallet-card .card-body {
             padding: 1rem;
           }
@@ -427,6 +438,72 @@ export default async function TesterDashboardPage({
           }
         }
       `}</style>
+
+      {/* ======================================================
+          NATIVE MOBILE APP HEADER (Phones Only - Exact Match)
+      ====================================================== */}
+      <div className="col-12 d-block d-md-none tester-app-header-container">
+        <div className="tester-app-header">
+          {/* Top Row: User Avatar & Search */}
+          <div className="d-flex align-items-center justify-content-between mb-3">
+            <button
+              type="button"
+              id="sidebar-toggle"
+              className="tester-app-avatar-btn sidebar-toggle-btn border-0 p-0 bg-transparent"
+              aria-label="Open Menu"
+            >
+              {testerProfile.profileImage ? (
+                <img
+                  src={testerProfile.profileImage}
+                  alt={testerProfile.fullName}
+                  className="rounded-circle object-fit-cover"
+                  style={{ width: "44px", height: "44px", border: "2px solid #ffffff" }}
+                />
+              ) : (
+                <div className="tester-app-avatar-initial">
+                  {testerFirstName.charAt(0).toUpperCase()}
+                </div>
+              )}
+            </button>
+
+            <Link
+              href="/tester/campaigns/live"
+              className="tester-app-header-search-btn text-white text-decoration-none"
+              aria-label="Search Campaigns"
+            >
+              <i className="bi bi-search fs-5"></i>
+            </Link>
+          </div>
+
+          {/* Greeting */}
+          <h2 className="tester-app-greeting">
+            Hello, {testerFirstName}
+          </h2>
+
+          {/* Horizontal Scrollable Filter Pills */}
+          <div className="tester-app-filter-scroll">
+            <span className="tester-app-filter-pill active">
+              Trending
+            </span>
+            <Link href="/tester/campaigns/live" className="tester-app-filter-pill">
+              Recently Added
+            </Link>
+            <Link href="/tester/campaigns/live" className="tester-app-filter-pill">
+              All Categories
+            </Link>
+            <Link href="/tester/campaigns/live" className="tester-app-filter-pill">
+              High Payout
+            </Link>
+            <Link
+              href="/tester/campaigns/live"
+              className="tester-app-filter-icon-btn ms-auto text-decoration-none"
+              aria-label="Filter Options"
+            >
+              <i className="bi bi-sliders"></i>
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* ======================================================
           PROFILE COMPLETION ALERT
@@ -539,10 +616,10 @@ export default async function TesterDashboardPage({
       )}
 
       {/* ======================================================
-          PAGE HEADER
+          PAGE HEADER (Desktop)
       ====================================================== */}
 
-      <div className="col-12">
+      <div className="col-12 d-none d-md-block">
 
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
 
@@ -802,187 +879,171 @@ export default async function TesterDashboardPage({
       </div>
 
       {/* ======================================================
-          MOBILE LIVE CAMPAIGNS (PHONES ONLY)
-          Pagination is server-side: 4 campaigns per page.
-          Tablets and desktop keep the existing dashboard.
+          MOBILE LIVE CAMPAIGNS (PHONES ONLY - Exact App Match)
       ====================================================== */}
 
       <section
-        className="col-12 d-block d-sm-none"
+        className="col-12 d-block d-md-none mt-2"
         aria-labelledby="mobile-live-campaigns-title"
       >
-        <div className="card border-0 shadow-sm">
-          <div className="card-body p-0">
-            <div className="d-flex align-items-center justify-content-between gap-2 p-3 mb-0">
-              <div>
-                <h5
-                  id="mobile-live-campaigns-title"
-                  className="fw-bold mb-1"
-                >
-                  Live Campaigns
-                </h5>
-                <div className="text-muted small">
-                  {liveCampaignCount} matching your profile
-                </div>
-              </div>
+        <div className="d-flex align-items-center justify-content-between px-1 mb-2">
+          <h6
+            id="mobile-live-campaigns-title"
+            className="fw-bold mb-0 text-dark fs-15"
+          >
+            Live Campaigns ({liveCampaignCount})
+          </h6>
 
-              <Link
-                href="/tester/campaigns/live"
-                className="btn btn-sm btn-outline-primary text-nowrap"
-              >
-                View All
-              </Link>
+          <Link
+            href="/tester/campaigns/live"
+            className="text-decoration-none fw-semibold fs-13"
+            style={{ color: "#012977" }}
+          >
+            View All &rarr;
+          </Link>
+        </div>
+
+        {mobileLiveCampaigns.length === 0 ? (
+          <div className="card border-0 shadow-sm text-center py-4 bg-white rounded-4">
+            <div className="fs-2 text-muted mb-2">
+              <i className="bi bi-megaphone"></i>
             </div>
+            <p className="text-muted small mb-0">
+              No eligible live campaigns available right now.
+            </p>
+          </div>
+        ) : (
+          <div className="tester-mobile-campaign-list">
+            {mobileLiveCampaigns.map((campaign) => {
+              const filledCount =
+                campaign.filledSlots ??
+                (campaign.totalSlots - (campaign.availableSlots ?? 0));
+              const isApplied = mobileApplicationStatusByCampaignId.has(campaign.id);
+              const applicationStatus = mobileApplicationStatusByCampaignId.get(campaign.id);
 
-            {mobileLiveCampaigns.length === 0 ? (
-              <div className="text-center py-4">
-                <div className="fs-2 text-muted mb-2">
-                  <i className="bi bi-megaphone"></i>
-                </div>
-                <p className="text-muted small mb-0">
-                  No eligible live campaigns available right now.
-                </p>
-              </div>
-            ) : (
-              <div
-                className="tester-mobile-campaign-list px-2 pb-2"
-                style={{ width: "100%", maxWidth: "none" }}
-              >
-                {mobileLiveCampaigns.map((campaign) => (
-                  <div
-                    key={campaign.id}
-                    className="tester-mobile-campaign-card"
-                    style={{ width: "100%", maxWidth: "none", marginInline: 0, boxSizing: "border-box" }}
-                  >
-                    {/* TOP — same presentation as the Live Campaigns mobile page */}
-                    <div className="tester-mobile-campaign-top">
-                      <div className="tester-mobile-product-image">
-                        {campaign.productImage ? (
-                          <img
-                            src={campaign.productImage}
-                            alt={campaign.productName}
-                          />
-                        ) : (
-                          <div className="tester-campaign-image-placeholder">
-                            <i className="bi bi-image"></i>
-                          </div>
-                        )}
+              return (
+                <Link
+                  key={campaign.id}
+                  href={`/tester/campaigns/live/${campaign.id}`}
+                  className="tester-mobile-campaign-card"
+                >
+                  {/* Square Product Image */}
+                  <div className="tester-mobile-product-image">
+                    {campaign.productImage ? (
+                      <img
+                        src={campaign.productImage}
+                        alt={campaign.productName}
+                      />
+                    ) : (
+                      <div className="tester-campaign-image-placeholder">
+                        <i className="bi bi-image text-muted fs-4"></i>
                       </div>
+                    )}
+                  </div>
 
-                      <div className="tester-mobile-product-info">
-                        <div className="tester-campaign-brand">
-                          {campaign.brand?.companyName ?? "Brand"}
-                        </div>
-                        <h6>{campaign.productName}</h6>
-                        <div className="tester-mobile-task-count">
-                          <i className="bi bi-list-check"></i>
-                          {campaign.task4Required ? "4 Tasks" : "3 Tasks"}
-                        </div>
+                  {/* Product Info & Stats */}
+                  <div className="tester-mobile-product-info">
+                    <div className="d-flex align-items-start justify-content-between gap-1">
+                      <div className="tester-mobile-product-title">
+                        {campaign.productName}
                       </div>
-                    </div>
-
-                    {/* STATS */}
-                    <div className="tester-mobile-campaign-stats">
-                      <div className="tester-mobile-stat">
-                        <span>Earning</span>
-                        <strong>
-                          ₹{Number(campaign.earningAmount).toLocaleString("en-IN")}
-                        </strong>
-                      </div>
-                      <div className="tester-mobile-stat">
-                        <span>Slots Left</span>
-                        <strong>{campaign.availableSlots}</strong>
-                      </div>
-                    </div>
-
-                    {/* ACTION — match live campaign page, including application status */}
-                    <div className="tester-mobile-campaign-action">
-                      {mobileApplicationStatusByCampaignId.has(campaign.id) ? (
-                        <>
-                          <Link
-                            href={`/tester/campaigns/live/${campaign.id}`}
-                            className="btn btn-outline-primary flex-grow-1"
-                          >
-                            View Campaign
-                          </Link>
-
-                          <span
-                            className={`tester-application-status ${getMobileApplicationClass(
-                              mobileApplicationStatusByCampaignId.get(campaign.id) ?? null
-                            )}`}
-                          >
-                            {mobileApplicationStatusByCampaignId.get(campaign.id)}
-                          </span>
-                        </>
-                      ) : (
-                        <Link
-                          href={`/tester/campaigns/live/${campaign.id}`}
-                          className="btn btn-primary w-100"
+                      {isApplied && (
+                        <span
+                          className={`badge rounded-pill flex-shrink-0 ${getMobileApplicationClass(
+                            applicationStatus ?? null
+                          )}`}
+                          style={{ fontSize: "10px", padding: "3px 8px" }}
                         >
-                          View More Details
-                          <i className="bi bi-arrow-right ms-2"></i>
-                        </Link>
+                          {applicationStatus}
+                        </span>
                       )}
                     </div>
+
+                    <div className="tester-mobile-brand-name">
+                      {campaign.brand?.companyName ?? "Brand"}
+                    </div>
+
+                    {/* Stats */}
+                    <div className="tester-mobile-stats-row">
+                      <div className="tester-mobile-stat-col">
+                        <div className="tester-mobile-stat-label">
+                          <i className="bi bi-wallet2"></i>
+                          <span>Earn Upto</span>
+                        </div>
+                        <div className="tester-mobile-stat-value-earn">
+                          ₹{Number(campaign.earningAmount).toLocaleString("en-IN")}
+                        </div>
+                      </div>
+
+                      <div className="tester-mobile-stat-col text-end">
+                        <div className="tester-mobile-stat-label justify-content-end">
+                          <i className="bi bi-people"></i>
+                          <span>Slots</span>
+                        </div>
+                        <div className="tester-mobile-stat-value-slots">
+                          {filledCount}/{campaign.totalSlots}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
-            )}
-
-            {liveCampaignCount > MOBILE_CAMPAIGNS_PER_PAGE && (
-              <nav
-                className="d-flex justify-content-between align-items-center gap-2 mt-3 p-3 border-top"
-                aria-label="Mobile live campaign pagination"
-              >
-                {mobilePage > 1 ? (
-                  <Link
-                    href={
-                      mobilePage - 1 === 1
-                        ? "/tester"
-                        : `/tester?mobilePage=${mobilePage - 1}`
-                    }
-                    scroll={false}
-                    className="btn btn-outline-primary btn-sm"
-                  >
-                    <i className="bi bi-chevron-left me-1"></i>
-                    Prev
-                  </Link>
-                ) : (
-                  <span
-                    className="btn btn-outline-secondary btn-sm disabled"
-                    aria-disabled="true"
-                  >
-                    <i className="bi bi-chevron-left me-1"></i>
-                    Prev
-                  </span>
-                )}
-
-                <span className="small text-muted text-nowrap">
-                  {mobilePage} / {totalMobilePages}
-                </span>
-
-                {mobilePage < totalMobilePages ? (
-                  <Link
-                    href={`/tester?mobilePage=${mobilePage + 1}`}
-                    scroll={false}
-                    className="btn btn-outline-primary btn-sm"
-                  >
-                    Next
-                    <i className="bi bi-chevron-right ms-1"></i>
-                  </Link>
-                ) : (
-                  <span
-                    className="btn btn-outline-secondary btn-sm disabled"
-                    aria-disabled="true"
-                  >
-                    Next
-                    <i className="bi bi-chevron-right ms-1"></i>
-                  </span>
-                )}
-              </nav>
-            )}
+                </Link>
+              );
+            })}
           </div>
-        </div>
+        )}
+
+        {liveCampaignCount > MOBILE_CAMPAIGNS_PER_PAGE && (
+          <nav
+            className="d-flex justify-content-between align-items-center gap-2 mt-3 p-3 bg-white rounded-4 shadow-sm"
+            aria-label="Mobile live campaign pagination"
+          >
+            {mobilePage > 1 ? (
+              <Link
+                href={
+                  mobilePage - 1 === 1
+                    ? "/tester"
+                    : `/tester?mobilePage=${mobilePage - 1}`
+                }
+                scroll={false}
+                className="btn btn-outline-primary btn-sm"
+              >
+                <i className="bi bi-chevron-left me-1"></i>
+                Prev
+              </Link>
+            ) : (
+              <span
+                className="btn btn-outline-secondary btn-sm disabled"
+                aria-disabled="true"
+              >
+                <i className="bi bi-chevron-left me-1"></i>
+                Prev
+              </span>
+            )}
+
+            <span className="small text-muted text-nowrap">
+              {mobilePage} / {totalMobilePages}
+            </span>
+
+            {mobilePage < totalMobilePages ? (
+              <Link
+                href={`/tester?mobilePage=${mobilePage + 1}`}
+                scroll={false}
+                className="btn btn-outline-primary btn-sm"
+              >
+                Next
+                <i className="bi bi-chevron-right ms-1"></i>
+              </Link>
+            ) : (
+              <span
+                className="btn btn-outline-secondary btn-sm disabled"
+                aria-disabled="true"
+              >
+                Next
+                <i className="bi bi-chevron-right ms-1"></i>
+              </span>
+            )}
+          </nav>
+        )}
       </section>
 
       {/* ======================================================
