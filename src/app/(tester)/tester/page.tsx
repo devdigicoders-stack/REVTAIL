@@ -419,6 +419,10 @@ export default async function TesterDashboardPage({
             padding: 0 1rem 80px 1rem !important;
             background-color: #f8fafc !important;
           }
+          .tester-profile-cta-btn {
+            width: 100% !important;
+            margin-top: 0.25rem;
+          }
           .tester-wallet-card .card-body {
             padding: 1rem;
           }
@@ -435,6 +439,11 @@ export default async function TesterDashboardPage({
             width: 100%;
             padding-top: 0.55rem;
             padding-bottom: 0.55rem;
+          }
+        }
+        @media (min-width: 768px) {
+          .tester-profile-cta-btn {
+            width: auto !important;
           }
         }
       `}</style>
@@ -522,81 +531,83 @@ export default async function TesterDashboardPage({
             }}
           >
             <div className="card-body p-3 p-sm-4">
-              <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+              <div className="row align-items-center g-3">
                 {/* Left */}
-                <div className="d-flex align-items-start gap-3 flex-grow-1">
-                  <div
-                    className="flex-shrink-0 d-flex align-items-center justify-content-center text-white"
-                    style={{
-                      width: "44px",
-                      height: "44px",
-                      borderRadius: "12px",
-                      background: "linear-gradient(135deg, #012977 0%, #1e40af 100%)",
-                      boxShadow: "0 4px 10px rgba(1, 41, 119, 0.2)",
-                    }}
-                  >
-                    <i className="bi bi-person-check fs-4"></i>
-                  </div>
-
-                  <div className="flex-grow-1">
-                    <div className="d-flex flex-wrap align-items-center gap-2 mb-1">
-                      <h5 className="fw-bold mb-0 text-dark" style={{ fontSize: "16px" }}>
-                        Complete your tester profile
-                      </h5>
-                      <span
-                        className="badge rounded-pill fw-semibold px-2 py-0.5"
-                        style={{
-                          backgroundColor: "#FEF3C7",
-                          color: "#92400E",
-                          fontSize: "11px",
-                        }}
-                      >
-                        Action Required
-                      </span>
+                <div className="col-12 col-md-8 col-lg-9">
+                  <div className="d-flex align-items-start gap-3">
+                    <div
+                      className="flex-shrink-0 d-flex align-items-center justify-content-center text-white"
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        borderRadius: "12px",
+                        background: "linear-gradient(135deg, #012977 0%, #1e40af 100%)",
+                        boxShadow: "0 4px 10px rgba(1, 41, 119, 0.2)",
+                      }}
+                    >
+                      <i className="bi bi-person-check fs-4"></i>
                     </div>
 
-                    <p className="text-muted mb-2 small" style={{ lineHeight: "1.5" }}>
-                      Add your email, profile image, Instagram ID, interests and bank
-                      details to complete your Revtail profile.
-                    </p>
-
-                    {/* Progress */}
-                    <div className="d-flex align-items-center gap-2" style={{ maxWidth: "380px" }}>
-                      <div
-                        className="progress flex-grow-1"
-                        style={{
-                          height: "7px",
-                          backgroundColor: "#e2e8f0",
-                          borderRadius: "999px",
-                          overflow: "hidden",
-                        }}
-                      >
-                        <div
-                          className="progress-bar"
-                          role="progressbar"
+                    <div className="flex-grow-1 min-w-0">
+                      <div className="d-flex flex-wrap align-items-center gap-2 mb-1">
+                        <h5 className="fw-bold mb-0 text-dark" style={{ fontSize: "16px" }}>
+                          Complete your tester profile
+                        </h5>
+                        <span
+                          className="badge rounded-pill fw-semibold px-2 py-0.5"
                           style={{
-                            width: `${profileCompletionPercentage}%`,
-                            background: "linear-gradient(90deg, #012977 0%, #2563eb 100%)",
-                            borderRadius: "999px",
-                            transition: "width 0.4s ease",
+                            backgroundColor: "#FEF3C7",
+                            color: "#92400E",
+                            fontSize: "11px",
                           }}
-                          aria-valuenow={profileCompletionPercentage}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                        />
+                        >
+                          Action Required
+                        </span>
                       </div>
-                      <span className="fw-semibold text-dark fs-12 text-nowrap">
-                        {profileCompletionPercentage}% completed
-                      </span>
+
+                      <p className="text-muted mb-2 small" style={{ lineHeight: "1.5" }}>
+                        Add your email, profile image, Instagram ID, interests and bank
+                        details to complete your Revtail profile.
+                      </p>
+
+                      {/* Progress */}
+                      <div className="d-flex align-items-center gap-2" style={{ maxWidth: "340px" }}>
+                        <div
+                          className="progress flex-grow-1"
+                          style={{
+                            height: "7px",
+                            backgroundColor: "#e2e8f0",
+                            borderRadius: "999px",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <div
+                            className="progress-bar"
+                            role="progressbar"
+                            style={{
+                              width: `${profileCompletionPercentage}%`,
+                              background: "linear-gradient(90deg, #012977 0%, #2563eb 100%)",
+                              borderRadius: "999px",
+                              transition: "width 0.4s ease",
+                            }}
+                            aria-valuenow={profileCompletionPercentage}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                          />
+                        </div>
+                        <span className="fw-semibold text-dark fs-12 text-nowrap">
+                          {profileCompletionPercentage}% completed
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Right */}
-                <div className="w-100 w-md-auto flex-shrink-0 pt-1 pt-md-0">
+                <div className="col-12 col-md-4 col-lg-3 text-md-end">
                   <Link
                     href="/tester/profile"
-                    className="btn d-flex align-items-center justify-content-center gap-2 fw-semibold px-4 py-2 text-nowrap w-100 w-md-auto"
+                    className="btn d-inline-flex align-items-center justify-content-center gap-2 fw-semibold px-4 py-2 text-nowrap tester-profile-cta-btn"
                     style={{
                       backgroundColor: "#012977",
                       color: "#ffffff",
