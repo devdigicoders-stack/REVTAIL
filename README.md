@@ -1,37 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Revtail Platform
 
-## Getting Started
+Revtail is a full-stack product testing, consumer feedback, and campaign management platform built with Next.js (App Router), Prisma ORM, and MySQL/MariaDB.
 
-First, run the development server:
+---
 
+## 🚀 Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **UI / Styling**: React 19, Bootstrap 5, Bootstrap Icons, Tailwind CSS
+- **Database & ORM**: MySQL / MariaDB, Prisma ORM
+- **Authentication**: JWT (jose), bcryptjs
+- **Cloud Storage**: Cloudflare R2 / AWS S3 SDK
+- **Email**: Nodemailer (SMTP)
+- **Bot Protection**: Cloudflare Turnstile
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Prerequisites
+- Node.js `20.x` or higher recommended
+- npm or yarn / pnpm
+- MySQL or MariaDB database running locally or remotely
+
+### 2. Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+```
+*(Note: `prisma generate` will run automatically after install via the postinstall script).*
+
+### 3. Environment Setup
+Create a `.env` file in the root directory (you can copy from `.env.example` or `env.example`):
+```bash
+cp .env.example .env
+```
+Ensure your database connection string and required keys are configured:
+```env
+DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE_NAME"
+JWT_SECRET="your-jwt-secret-key"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Database Schema Setup
+To sync your database schema with Prisma:
+```bash
+npx prisma db push
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+*(Optional) To seed default test users / initial data:*
+```bash
+npm run seed
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Run Development Server
+```bash
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌐 Application Portals
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Tester Portal**: `http://localhost:3000/tester`
+- **Brand Portal**: `http://localhost:3000/brand`
+- **Admin Portal**: `http://localhost:3000/admin`
+- **Authentication**: `http://localhost:3000/login`
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📦 Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# revtail" 
+- `npm run dev` - Start development server (`next dev --webpack`)
+- `npm run build` - Build the project for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint checks
+- `npm run seed` - Run database seed script
